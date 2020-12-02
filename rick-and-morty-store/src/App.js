@@ -87,7 +87,7 @@ const Home = () => {
     <div className="container-wrapper">
       {loaderShow && <Loader isLoader={loaderShow}/>}
     {showDetail && <Detail closeDetail={closeDetail} charId={showDetail} />}
-      <div className="searc-form-wrapper">
+      <div className={`${showDetail ? "blur " : ""}searc-form-wrapper`}>
         <Formik
           initialValues={{
             searchText: ""
@@ -95,7 +95,7 @@ const Home = () => {
           onSubmit={(values) => {
             setPageContent([])
             setPageNum(0)
-            fetchData(`https://rickandmortyapi.com/api/character/?name=${values.searchText}`).then((data) => {
+            values.searchText != "" && fetchData(`https://rickandmortyapi.com/api/character/?name=${values.searchText}`).then((data) => {
               toggleClearSearchBtn(true)
               setSearchResults(data.results)
               nextP = data.info.next;

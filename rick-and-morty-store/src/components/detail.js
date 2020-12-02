@@ -38,22 +38,27 @@ const Detail = props => {
         <span className="back-btn" onClick={() => { props.closeDetail() }}>&#10005;</span>
       </div>
       <img src={details.image} alt={`${details.name}'s mushot`} />
-      <span className="id">{details.id}</span>
-      <span className="name">{details.name}</span>
-      <span className="status">{details.status}</span>
-      <span className="species">{details.species}</span>
-      {details.type != "" && <span className="type">{details.type}</span>}
-      <span className="gender">{details.gender}</span>
-      <span className="origin">{details.origin.name}</span>
-      <span className="created">{new Date(details.created).getFullYear()}</span>
-      <span className="location">{details.location.name}</span>
-      {epDetails && epDetails.map((episodes, ind) => {
+      <span className="id">ID: <span>{details.id}</span></span>
+      <span className="name">Name: <span>{details.name}</span></span>
+      <span className="status">Status: <span>{details.status}</span></span>
+      <span className="species">Species: <span>{details.species}</span></span>
+      {details.type != "" && <span className="type">Type: <span>{details.type}</span></span>}
+      <span className="gender">Gender: <span>{details.gender}</span></span>
+      <span className="origin">Originated from: <span>{details.origin.name}</span></span>
+      <span className="created">Created in: <span>{new Date(details.created).getFullYear()}</span></span>
+      <span className="location">Last seen at: <span>{details.location.name}</span></span>
+      {epDetails && <div className="episode-list-label">
+      {`Featured in ${epDetails.length === 1 ? "episode" : "episodes"}: `}
+      </div>}
+      {epDetails && <div className="episode-list-container">
+      {epDetails.map((episodes, ind) => {
         return (
-          <a href={episodes.url}>
+          <a href={episodes.url} key={`all_episodes_${ind}`}>
             <span className="epoisode">{episodes.name}</span>
           </a>
         )
       })}
+      </div>}
       <div className="CTA-btn" onClick={() => { window.alert(`You will be redirected to ${details.name}'s merch page`) }}>Buy merchandise</div>
     </div> : <Loader isLoader={true}/>
   )

@@ -1,6 +1,11 @@
 * {
   box-sizing: border-box;
 }
+.blur {
+  opacity: 0.3;
+  overflow: hidden;
+  pointer-events: none;
+}
 .container-wrapper {
   display: block;
   min-height: 100vh;
@@ -60,7 +65,7 @@
 .clear-search.show-all {
   position: absolute;
   bottom: 0;
-  right: 5px;
+  right: 5%;
   background: #fff;
   padding: 5px;
   font-size: 14px;
