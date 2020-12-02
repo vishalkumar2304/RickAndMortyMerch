@@ -1,19 +1,58 @@
 import React from 'react';
+import axios from 'axios';
 
-const Listing = props => {
+const Detail = props => {
+  const [details, setDetails] = React.useState(null);
+  const [epDetails, setEpDetails] = React.useState(null);
 
-    const fetchDetails = charId => {
-        console.log(charId)
-    }
+  React.useEffect(() => {
+    axios.get(`https://rickandmortyapi.com/api/character/${props.charId}`).then((data) => {
+      if (data.data) {
+        let CSEpisodes = [];
+        data.data.episode.forEach(episode => {
+          const episodeNumber = episode.split('/').pop();
+          CSEpisodes.push(episodeNumber)
+        })
+        setDetails(data.data)
+        axios.get(`https://rickandmortyapi.com/api/episode/${CSEpisodes}`).then((data) => {
+          if (data.data) {
+            if (data.data.length > 0) {
+              setEpDetails(data.data)
+            }
+            else {
+              setEpDetails([data.data])
+            }
+          }
+        })
+      }
+    })
+  }, [0])
 
-    return(
-        <div key={props.keyInd} className="list-container" onClick={()=>fetchDetails(props.charId)}>
-            <img src={props.image} alt={`${props.name}'s mushot`}/>
-            <span className="name">{props.name}</span>
-            <a href={props.seen.url}><span className="location">{props.seen.name}</span></a>
-            <span className="epoisode">{props.episodes}</span>
-        </div>
-    )
+  return (
+    details ? <div className="list-container">
+      <div>
+        <span className="back-btn" onClick={() => { props.closeDetail() }}>{`<-`}</span>
+      </div>
+      <img src={details.image} alt={`${details.name}'s mushot`} />
+      <span className="id">{details.id}</span>
+      <span className="name">{details.name}</span>
+      <span className="status">{details.status}</span>
+      <span className="species">{details.species}</span>
+      {details.type != "" && <span className="type">{details.type}</span>}
+      <span className="gender">{details.gender}</span>
+      <span className="origin">{details.origin.name}</span>
+      <span className="created">{new Date(details.created).getFullYear()}</span>
+      <span className="location">{details.location.name}</span>
+      {epDetails && epDetails.map((episodes, ind) => {
+        return (
+          <a href={episodes.url}>
+            <span className="epoisode">{episodes.name}</span>
+          </a>
+        )
+      })}
+      <div className="CTA-btn" onClick={() => { window.alert(`You will be redirected to ${details.name}'s merch page`) }}>Buy merchandise</div>
+    </div> : ""
+  )
 }
 
-export default Listing;
+export default Detail;
