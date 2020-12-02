@@ -1,12 +1,12 @@
 import React from 'react';
-import axios from 'axios';
+import {get} from '../utils/common';
 
 const Detail = props => {
   const [details, setDetails] = React.useState(null);
   const [epDetails, setEpDetails] = React.useState(null);
 
   React.useEffect(() => {
-    axios.get(`https://rickandmortyapi.com/api/character/${props.charId}`).then((data) => {
+    get(`https://rickandmortyapi.com/api/character/${props.charId}`).then((data) => {
       if (data.data) {
         let CSEpisodes = [];
         data.data.episode.forEach(episode => {
@@ -14,7 +14,7 @@ const Detail = props => {
           CSEpisodes.push(episodeNumber)
         })
         setDetails(data.data)
-        axios.get(`https://rickandmortyapi.com/api/episode/${CSEpisodes}`).then((data) => {
+        get(`https://rickandmortyapi.com/api/episode/${CSEpisodes}`).then((data) => {
           if (data.data) {
             if (data.data.length > 0) {
               setEpDetails(data.data)
@@ -29,7 +29,7 @@ const Detail = props => {
   }, [0])
 
   return (
-    details ? <div className="list-container">
+    details ? <div className="detail-container">
       <div>
         <span className="back-btn" onClick={() => { props.closeDetail() }}>{`<-`}</span>
       </div>

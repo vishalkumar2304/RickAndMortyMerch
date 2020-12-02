@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+import {get} from './utils/common';
 import { Formik, Field, Form } from "formik"
+import "./App.css";
 
 import Listing from "./components/listing";
 import Detail from "./components/detail";
@@ -15,6 +16,10 @@ const Home = () => {
   const [showDetail, toggleDetail] = React.useState(null);
   const [clearSearchBtnShow, toggleClearSearchBtn] = React.useState(false);
 
+  React.useEffect(()=>{
+    document.title="Rick and Morty merch store";
+  },[0])
+
   React.useEffect(() => {
     if (searchResults && searchResults.length > 0) {
       let calc = pageNum * pageContent.length;
@@ -22,25 +27,35 @@ const Home = () => {
     }
   }, [searchResults, pageNum])
 
+  const fetchData = (url) => {
+    return new Promise((resolve, reject)=>{
+      get(url).then((data)=>{
+        if (data && data.data && data.data.info && data.data.info.count > 0) {
+          resolve(data.data)
+        }
+      },(err)=>{
+        reject(err)
+      })
+    })
+  }
+
   const handleBtnClick = increment => {
     setPageNum(pageNum + increment);
   }
 
   const pageChangeHandler = (url, next) => {
     setPageContent([])
-    axios.get(url).then((data) => {
-      if (data && data.data && data.data.info && data.data.info.count > 0) {
-        toggleClearSearchBtn(true)
-        if (next) {
-          setPageNum(0)
-        }
-        else {
-          setPageNum(Math.ceil(data.data.results.length / pageCap) - 1)
-        }
-        setSearchResults(data.data.results)
-        nextP = data.data.info.next;
-        prevP = data.data.info.prev;
+    fetchData(url).then((data) => {
+      toggleClearSearchBtn(true)
+      if (next) {
+        setPageNum(0)
       }
+      else {
+        setPageNum(Math.ceil(data.results.length / pageCap) - 1)
+      }
+      setSearchResults(data.results)
+      nextP = data.info.next;
+      prevP = data.info.prev;
     })
   }
 
@@ -56,12 +71,10 @@ const Home = () => {
     toggleClearSearchBtn(false);
     setPageContent([])
     setPageNum(0)
-    axios.get(`https://rickandmortyapi.com/api/character/`).then((data) => {
-      if (data && data.data && data.data.info && data.data.info.count > 0) {
-        setSearchResults(data.data.results)
-        nextP = data.data.info.next;
-        prevP = data.data.info.prev;
-      }
+    fetchData(`https://rickandmortyapi.com/api/character/`).then((data) => {
+      setSearchResults(data.results)
+      nextP = data.info.next;
+      prevP = data.info.prev;
     })
   }
 
@@ -78,13 +91,11 @@ const Home = () => {
           onSubmit={(values) => {
             setPageContent([])
             setPageNum(0)
-            axios.get(`https://rickandmortyapi.com/api/character/?name=${values.searchText}`).then((data) => {
-              if (data && data.data && data.data.info && data.data.info.count > 0) {
-                toggleClearSearchBtn(true)
-                setSearchResults(data.data.results)
-                nextP = data.data.info.next;
-                prevP = data.data.info.prev;
-              }
+            fetchData(`https://rickandmortyapi.com/api/character/?name=${values.searchText}`).then((data) => {
+              toggleClearSearchBtn(true)
+              setSearchResults(data.results)
+              nextP = data.info.next;
+              prevP = data.info.prev;
             })
           }}
           enableReinitialize
