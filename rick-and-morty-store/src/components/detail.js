@@ -1,6 +1,10 @@
 import React from 'react';
 import {get} from '../utils/common';
 
+import Loader from "../components/loader";
+
+import '../css/detail.css';
+
 const Detail = props => {
   const [details, setDetails] = React.useState(null);
   const [epDetails, setEpDetails] = React.useState(null);
@@ -31,7 +35,7 @@ const Detail = props => {
   return (
     details ? <div className="detail-container">
       <div>
-        <span className="back-btn" onClick={() => { props.closeDetail() }}>{`<-`}</span>
+        <span className="back-btn" onClick={() => { props.closeDetail() }}>&#10005;</span>
       </div>
       <img src={details.image} alt={`${details.name}'s mushot`} />
       <span className="id">{details.id}</span>
@@ -51,7 +55,7 @@ const Detail = props => {
         )
       })}
       <div className="CTA-btn" onClick={() => { window.alert(`You will be redirected to ${details.name}'s merch page`) }}>Buy merchandise</div>
-    </div> : ""
+    </div> : <Loader isLoader={true}/>
   )
 }
 

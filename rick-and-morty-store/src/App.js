@@ -1,8 +1,9 @@
 import React from 'react';
 import {get} from './utils/common';
-import { Formik, Field, Form } from "formik"
+import { Formik, Field, Form } from "formik";
 import "./App.css";
 
+import Loader from "./components/loader";
 import Listing from "./components/listing";
 import Detail from "./components/detail";
 
@@ -15,6 +16,7 @@ const Home = () => {
   const [pageContent, setPageContent] = React.useState(null);
   const [showDetail, toggleDetail] = React.useState(null);
   const [clearSearchBtnShow, toggleClearSearchBtn] = React.useState(false);
+  const [loaderShow, toggleLoader] = React.useState(false);
 
   React.useEffect(()=>{
     document.title="Rick and Morty merch store";
@@ -28,12 +30,15 @@ const Home = () => {
   }, [searchResults, pageNum])
 
   const fetchData = (url) => {
+    toggleLoader(true)
     return new Promise((resolve, reject)=>{
       get(url).then((data)=>{
         if (data && data.data && data.data.info && data.data.info.count > 0) {
+          toggleLoader(false)
           resolve(data.data)
         }
       },(err)=>{
+        toggleLoader(false)
         reject(err)
       })
     })
@@ -79,11 +84,10 @@ const Home = () => {
   }
 
   return (
-    showDetail
-      ?
-      <Detail closeDetail={closeDetail} charId={showDetail} />
-      :
-      <div className="container-wrapper">
+    <div className="container-wrapper">
+      {loaderShow && <Loader isLoader={loaderShow}/>}
+    {showDetail && <Detail closeDetail={closeDetail} charId={showDetail} />}
+      <div className="searc-form-wrapper">
         <Formik
           initialValues={{
             searchText: ""
@@ -117,7 +121,7 @@ const Home = () => {
         {pageContent && pageContent.length > 0 && <div className="listing-container">
           {pageContent.map((res, ind) => {
             return (
-              res ? <Listing getDetails={getDetails} keyInd={`search_res_${ind}`} name={res.name} image={res.image} seen={res.location} episodes={res.episode.length} charId={res.id} /> : null
+              res ? <Listing getDetails={getDetails} key={`key_prop_search_${ind}`} keyInd={`search_res_${ind}`} name={res.name} image={res.image} seen={res.location} episodes={res.episode.length} charId={res.id} /> : null
             )
           })}
           <div className="pagination-container">
@@ -136,6 +140,7 @@ const Home = () => {
           </div>
         </div>}
       </div>
+    </div>
   );
 }
 
