@@ -21,6 +21,7 @@
 .list-container > .text-properties {
   display: inline-block;
   vertical-align: middle;
+  width: calc(100% - 120px);
 }
 .text-properties > span {
   display: block;
@@ -30,4 +31,15 @@
 .text-properties > span > span {
   font-weight: 600;
   font-size: 15px;
+}
+@media only screen and (max-width: 420px) {
+  .list-container {
+    height: 100px;
+  }
+  .list-container > img {
+    width: 80px;
+  }
+  .list-container > .text-properties {
+    width: calc(100% - 100px);
+  }
 }

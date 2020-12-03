@@ -108,3 +108,18 @@
   left: 0;
   background: #dab887;
 }
+@media only screen and (max-width: 420px) {
+  .searc-form-wrapper form input {
+    display: block;
+    width: 250px;
+    margin-bottom: 10px;
+  }
+  .searc-form-wrapper form button {
+    width: 100%;
+  }
+  .listing-container {
+    width: 100%;
+    padding: 20px 20px 50px;
+    margin-top: 20px;
+  }
+}

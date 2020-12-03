@@ -82,3 +82,40 @@
   background: #df9875;
   outline: none;
 }
+@media only screen and (max-width: 420px) {
+  .detail-container {
+    width: 90%;
+    max-height: 90%;
+    padding: 20px;
+    padding-top: 30px;
+  }
+  .back-btn {
+    font-size: 15px;
+    top: 12px;
+    right: 12px;
+  }
+  .detail-container > img {
+    width: 140px;
+    margin-bottom: 15px;
+  }
+  .detail-container > span {
+    font-size: 12px;
+    margin: 4px auto;
+  }
+  .detail-container > span > span {
+    font-size: 13px;
+  }
+  .episode-list-label {
+    font-size: 13px;
+    margin-top: 7px;
+    padding-top: 7px;
+  }
+  .episode-list-container {
+    width: 100%;
+    margin: 6px auto 20px;
+    max-height: 92px;
+  }
+  .episode-list-container > a {
+    font-size: 13px;
+  }
+}
