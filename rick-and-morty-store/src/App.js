@@ -1,5 +1,5 @@
 import React from 'react';
-import {get} from './utils/common';
+import { get } from './utils/common';
 import { Formik, Field, Form } from "formik";
 import "./App.css";
 
@@ -18,9 +18,9 @@ const Home = () => {
   const [clearSearchBtnShow, toggleClearSearchBtn] = React.useState(false);
   const [loaderShow, toggleLoader] = React.useState(false);
 
-  React.useEffect(()=>{
-    document.title="Rick and Morty merch store";
-  },[0])
+  React.useEffect(() => {
+    document.title = "Rick and Morty merch store";
+  }, [0])
 
   React.useEffect(() => {
     if (searchResults && searchResults.length > 0) {
@@ -31,13 +31,13 @@ const Home = () => {
 
   const fetchData = (url) => {
     toggleLoader(true)
-    return new Promise((resolve, reject)=>{
-      get(url).then((data)=>{
+    return new Promise((resolve, reject) => {
+      get(url).then((data) => {
         if (data && data.data && data.data.info && data.data.info.count > 0) {
           toggleLoader(false)
           resolve(data.data)
         }
-      },(err)=>{
+      }, (err) => {
         toggleLoader(false)
         reject(err)
       })
@@ -72,7 +72,7 @@ const Home = () => {
     toggleDetail(null)
   }
 
-  const clearSearch = () =>{
+  const clearSearch = () => {
     toggleClearSearchBtn(false);
     setPageContent([])
     setPageNum(0)
@@ -85,8 +85,8 @@ const Home = () => {
 
   return (
     <div className="container-wrapper">
-      {loaderShow && <Loader isLoader={loaderShow}/>}
-    {showDetail && <Detail closeDetail={closeDetail} charId={showDetail} />}
+      {loaderShow && <Loader isLoader={loaderShow} />}
+      {showDetail && <Detail closeDetail={closeDetail} charId={showDetail} />}
       <div className={`${showDetail ? "blur " : ""}searc-form-wrapper`}>
         <Formik
           initialValues={{
@@ -117,7 +117,7 @@ const Home = () => {
             )
           }}
         </Formik>
-        {clearSearchBtnShow && <span className="clear-search show-all" onClick={()=>{clearSearch()}}>Clear Filter</span>}
+        {clearSearchBtnShow && <span className="clear-search show-all" onClick={() => { clearSearch() }}>Clear Filter</span>}
         {pageContent && pageContent.length > 0 && <div className="listing-container">
           {pageContent.map((res, ind) => {
             return (

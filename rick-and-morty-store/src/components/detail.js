@@ -1,5 +1,5 @@
 import React from 'react';
-import {get} from '../utils/common';
+import { get } from '../utils/common';
 
 import Loader from "../components/loader";
 
@@ -48,19 +48,19 @@ const Detail = props => {
       <span className="created">Created in: <span>{new Date(details.created).getFullYear()}</span></span>
       <span className="location">Last seen at: <span>{details.location.name}</span></span>
       {epDetails && <div className="episode-list-label">
-      {`Featured in ${epDetails.length === 1 ? "episode" : "episodes"}: `}
+        {`Featured in ${epDetails.length === 1 ? "episode" : "episodes"}: `}
       </div>}
       {epDetails && <div className="episode-list-container">
-      {epDetails.map((episodes, ind) => {
-        return (
-          <a href={episodes.url} key={`all_episodes_${ind}`}>
-            <span className="epoisode">{episodes.name}</span>
-          </a>
-        )
-      })}
+        {epDetails.map((episodes, ind) => {
+          return (
+            <a href={episodes.url} key={`all_episodes_${ind}`}>
+              <span className="epoisode">{episodes.name}</span>
+            </a>
+          )
+        })}
       </div>}
       <div className="CTA-btn" onClick={() => { window.alert(`You will be redirected to ${details.name}'s merch page`) }}>Buy merchandise</div>
-    </div> : <Loader isLoader={true}/>
+    </div> : <Loader isLoader={true} />
   )
 }
 
